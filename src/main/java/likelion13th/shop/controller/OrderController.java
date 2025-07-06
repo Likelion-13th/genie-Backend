@@ -33,7 +33,7 @@ public class OrderController {
 
     @PostMapping
     @Operation(summary = "주문 생성", description = "로그인한 사용자의 주문을 생성합니다.")
-    public ApiResponse<?> createOrder(
+    public ApiResponse<OrderResponseDto> createOrder(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody OrderCreateRequest request
     ) {
@@ -74,7 +74,6 @@ public class OrderController {
 
     }
 
-    //모든 주문 목록 조회
     @GetMapping
     @Operation(summary = "모든 주문 조회", description = "로그인한 사용자의 모든 주문을 목록으로 조회합니다.")
     public ApiResponse<?> getAllOrders(
@@ -96,7 +95,7 @@ public class OrderController {
         log.info("[STEP 1] 주문 취소 요청 수신");
 
         try {
-            orderService.cancelOrder(orderId); // ❌ boolean X → ✅ void로 바뀐 메서드
+            orderService.cancelOrder(orderId);
             log.info("[STEP 2] 주문 취소 성공");
             return ApiResponse.onSuccess(SuccessCode.ORDER_CANCEL_SUCCESS, "주문이 성공적으로 취소되었습니다.");
         } catch (GeneralException e) {
