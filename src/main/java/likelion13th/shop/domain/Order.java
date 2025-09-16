@@ -30,15 +30,15 @@ public class Order extends BaseEntity {
     @Setter
     private int finalPrice;
 
-    @Setter
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -52,9 +52,13 @@ public class Order extends BaseEntity {
         this.quantity = quantity;
         this.status = OrderStatus.PROCESSING;
         this.totalPrice = item.getPrice() * quantity;
+    }
 
-        user.getOrders().add(this);
-        item.getOrders().add(this);
+    public static Order create(User user, Item item, int quantity, int totalPrice, int finalPrice) {
+        Order order = new Order(user, item, quantity);
+        order.totalPrice = totalPrice;
+        order.finalPrice = finalPrice;
+        return order;
     }
 
     public void updateStatus(OrderStatus status) {
@@ -67,11 +71,14 @@ public class Order extends BaseEntity {
             user.getOrders().add(this);
         }
     }
-
-    public void setItem(Item item) {
-        this.item = item;
-        if (!item.getOrders().contains(this)) {
-            item.getOrders().add(this);
-        }
-    }
 }
+
+/*
+1)
+-사용자가 어떤 상품을 주문했는지 관계를 명확히 정의하여 주문 내역을 데이터베이스에 저장하고 관리하기 필요함
+-유효성 검증을 할 수 있고 주문 상태 변경 등을 할 수 있음
+
+2)
+-엔티티가 없으면 주문 데이터를 저장할 수 없음
+-관계 설정이 잘못되면 데이터가 꼬여서 오류가 발생함 (ex.주문 오류 등)
+ */

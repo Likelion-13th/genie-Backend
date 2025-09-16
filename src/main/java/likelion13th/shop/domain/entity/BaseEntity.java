@@ -23,3 +23,13 @@ public abstract class BaseEntity {
     @Column(insertable = false)
     private LocalDateTime updatedAt;
 }
+
+/*
+1)
+-코드의 재사용성을 높임
+-데이터의 수정을 관리하고 추적할 수 있게 함
+
+2)
+-없다면 개별적으로 선언해야 하고 정확성이 떨어짐
+-@CreationTimestamp, @UpdateTimestamp 어노테이션이 없으면 직접 설정해야 한다는 불편하미 있음 (복잡함과 실수를 줄여줌)
+ */

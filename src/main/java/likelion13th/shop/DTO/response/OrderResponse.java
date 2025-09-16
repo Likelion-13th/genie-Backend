@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class OrderResponseDto {
+public class OrderResponse {
     private Long orderId;
     private String usernickname;
     private String item_name;
@@ -21,8 +21,8 @@ public class OrderResponseDto {
     private OrderStatus status;
     private LocalDateTime createdAt;
 
-    public static OrderResponseDto from(Order order) {
-        return new OrderResponseDto(
+    public static OrderResponse from(Order order) {
+        return new OrderResponse(
                 order.getId(),
                 order.getUser().getUsernickname(),
                 order.getItem().getItemName(),

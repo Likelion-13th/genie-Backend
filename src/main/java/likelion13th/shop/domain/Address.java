@@ -15,10 +15,10 @@ public class Address {
     private String zipcode;
 
     @Column(nullable = false)
-    private String address; //
+    private String address;
 
-    @Column(nullable = false)
-    private String addressDetail; //
+    @Column(name = "adress_detail", nullable = false)
+    private String addressDetail;
 
     public Address() {
         this.zipcode = "10540";
@@ -26,3 +26,11 @@ public class Address {
         this.addressDetail = "한국항공대학교";
     }
 }
+
+/*
+1)
+-우편변호, 주소, 상세 주소 같은 필드를 하나로 묶어서 관리해야 코드 중복을 방지하고 수정이 편함
+
+2)
+-없다면, 모든 엔티티들에 필드를 각각 선언해야 하므로 복잡성이 큼
+ */

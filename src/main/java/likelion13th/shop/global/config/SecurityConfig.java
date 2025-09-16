@@ -29,45 +29,38 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 🔹 CSRF 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // 🔹 CORS 설정 적용
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // 🔹 인증 및 권한 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/health", // health check
+                                "/health",
 
-                                "/swagger-ui/**",         // 🔑 Swagger
+                                "/swagger-ui/**",
                                 "/v3/api-docs/**",
 
-                                "/users/reissue",         // 🔑 토큰 재발급
-                                "/users/logout",          // 🔑 로그아웃
+                                "/users/reissue",
+                                "/users/logout",
 
-                                "/token/**",              // 🔑 토큰 재발급 및 생성
-                                "/oauth2/**",             // 🟡 카카오 OAuth 리디렉션
-                                "/login/oauth2/**",        // 🟡 카카오 OAuth 콜백
+                                "/token/**",
+                                "/oauth2/**",
+                                "/login/oauth2/**",
 
-                                "/categories/**",         // ✅ 로그인 없이 카테고리 조회 가능
-                                "/items/**"               // ✅ 로그인 없이 상품 조회 가능
+                                "/categories/**",
+                                "/items/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                // 🔹 세션 정책: STATELESS (JWT 기반)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // 🔹 OAuth2 로그인 설정 (UserService 연동)
                 .oauth2Login(oauth2 -> oauth2
-                        //.loginPage("/users/login")
                         .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService))
                 )
 
-                // 🔹 필터 체인 적용
                 .addFilterBefore(authCreationFilter, AnonymousAuthenticationFilter.class)
                 .addFilterBefore(jwtValidationFilter, AuthCreationFilter.class);
 
@@ -81,8 +74,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
-                "http://sajang-dev.ap-northeast-2.elasticbeanstalk.com",
-                "https://likelionshop.netlify.app"
+                "https://genie-likelion.netlify.app/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

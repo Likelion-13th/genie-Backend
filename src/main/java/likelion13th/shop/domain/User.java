@@ -10,12 +10,10 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-
 public class User extends BaseEntity {
 
     @Id
@@ -47,23 +45,15 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private RefreshToken auth;
 
+    @Setter
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "zipcode", column = @Column(name = "zipcode", nullable = false)),
-            @AttributeOverride(name = "address", column = @Column(name = "address", nullable = false)),
-            @AttributeOverride(name = "addressDetail", column = @Column(name = "address_detail", nullable = false))
-    })
     private Address address;
-
-    public void updateAddress(Address address) {
-        this.address = address;
-    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrder(Order order) {
-        this.orders.add(order);
+        orders.add(order);
         order.setUser(this);
     }
 
@@ -91,4 +81,21 @@ public class User extends BaseEntity {
         }
         this.recentTotal = newTotal;
     }
+
+    public void updateAddress(Address address) {
+        this.address = address;
+    }
 }
+
+
+/*
+1)
+-회원 정보(ID, 닉네임, 주소, 마일리지, 전화번호 등)을 통합하여 데이터베이스에 저장하고 과닐함
+-회원가입, 로그인, 마이페이지 등 회원 관리 기능을 관리함
+-refreshtoken과 onetoone 관계로 로그인 세션 관리하고 인증 상태 유지함
+-providerId는 소셜 로그인의 식별자로 사용됨
+
+2)
+-엔티티가 없으면 회원 관련한 모든 것들의 서비스를 구현하지 못함
+-리프레시토큰의 관계가 맞지 않으면 로그인을 유지할 수 없음
+ */

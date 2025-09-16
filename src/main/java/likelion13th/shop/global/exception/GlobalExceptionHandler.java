@@ -22,11 +22,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// 전역 예외 처리
 @RestControllerAdvice(annotations = {RestController.class})
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //ConstraintViolationException
     @ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
         String errorMessage = e.getConstraintViolations().stream()
@@ -36,7 +34,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternalConstraint(e, ErrorCode.BAD_REQUEST, HttpHeaders.EMPTY, request);
     }
 
-    //GeneralException
     @ExceptionHandler(value = GeneralException.class)
     public ResponseEntity<Object> onThrowException(GeneralException generalException,
                                                    HttpServletRequest request) {
@@ -44,7 +41,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(generalException, reason, null, request);
     }
 
-    // MethodArgumentNotValidException
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException e, HttpHeaders headers, HttpStatusCode status,
@@ -58,7 +54,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternalArgs(e, HttpHeaders.EMPTY, ErrorCode.BAD_REQUEST, request, errors);
     }
 
-    // Exception
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
         e.printStackTrace();
@@ -66,7 +61,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus(), request, e.getMessage());
     }
 
-    // 공통 에러 응답
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ReasonDto reason,
                                                            HttpHeaders headers, HttpServletRequest request) {
         ApiResponse<Object> body = ApiResponse.onFailure(reason, null);
