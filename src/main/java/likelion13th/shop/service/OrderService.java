@@ -30,7 +30,7 @@ public class OrderService {
 
     @Transactional
     public OrderResponse createOrder(OrderCreateRequest request, CustomUserDetails customUserDetails) {
-        User user = userService.getAuthenticatedUser(customUserDetails.getProviderId());
+        User user = userService.getAuthenticalUser(customUserDetails.getProviderId());
         Item item = itemRepository.findById(request.getItemId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ITEM_NOT_FOUND));
 
@@ -55,7 +55,7 @@ public class OrderService {
 
     @Transactional
     public List<OrderResponse> getAllOrders(CustomUserDetails customUserDetails) {
-        User user = userService.getAuthenticatedUser(customUserDetails.getProviderId());
+        User user = userService.getAuthenticalUser(customUserDetails.getProviderId());
         return user.getOrders().stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());

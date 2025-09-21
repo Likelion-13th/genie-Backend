@@ -32,7 +32,7 @@ public class UserInfoController {
     public ApiResponse<?> getUserInfo(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        User user = userService.getAuthenticatedUser(customUserDetails.getProviderId());
+        User user = userService.getAuthenticalUser(customUserDetails.getProviderId());
 
         UserInfoResponse userInfo = UserInfoResponse.from(user);
 
@@ -54,7 +54,7 @@ public class UserInfoController {
     public ApiResponse<UserMileageResponse> getAvailableMileage(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        User user = userService.getAuthenticatedUser(customUserDetails.getProviderId());
+        User user = userService.getAuthenticalUser(customUserDetails.getProviderId());
         return ApiResponse.onSuccess(SuccessCode.USER_MILEAGE_SUCCESS, new UserMileageResponse(user.getMaxMileage()));
     }
 }

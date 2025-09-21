@@ -8,12 +8,12 @@ import lombok.*;
 @Setter
 
 public class JwtDto {
-    private String accesstoken;
-    private String refreshtoken;
+    private String accessToken;
+    private String refreshToken;
 
     public JwtDto(String accesstoken, String refreshtoken) {
-        this.accesstoken = accesstoken;
-        this.refreshtoken = refreshtoken;
+        this.accessToken = accesstoken;
+        this.refreshToken = refreshtoken;
     }
 }
 

@@ -27,9 +27,9 @@ public class TokenProvider {
     private final Long refreshTokenExpiration;
 
     public TokenProvider(
-            @Value("${JWT_SECRET") String secretKey,
-            @Value("${JWT_EXPIRATION") Long accessTokenExpiration,
-            @Value("${JWT_REFRESH_EXPIRATION") Long refreshTokenExpiration) {
+            @Value("${JWT_SECRET}") String secretKey,
+            @Value("${JWT_EXPIRATION}") Long accessTokenExpiration,
+            @Value("${JWT_REFRESH_EXPIRATION}") Long refreshTokenExpiration) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes());
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;

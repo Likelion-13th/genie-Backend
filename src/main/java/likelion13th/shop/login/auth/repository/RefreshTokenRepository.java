@@ -10,13 +10,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
+    Optional<RefreshToken> findByUser(User user);
+
+    @Modifying
     @Query("DELETE FROM RefreshToken rt WHERE rt.user = :user")
     void deleteByUser(@Param("user") User user);
 }
+
 
 /*
 1)

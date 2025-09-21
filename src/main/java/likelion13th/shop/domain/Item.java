@@ -28,6 +28,7 @@ public class Item extends BaseEntity {
 
     @Column(nullable = false)
     private int price;
+
     @Column(nullable = false)
     private String imagepath;
 

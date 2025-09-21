@@ -30,7 +30,7 @@ public class ItemResponse {
                 item.getItemName(),
                 item.getPrice(),
                 item.getBrand(),
-                item.getImagePath(),
+                item.getImagepath(),
                 item.isNew()
         );
     }

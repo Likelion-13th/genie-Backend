@@ -63,11 +63,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String frontendRedirectUri = request.getParameter("redirect_uri");
         List<String> authorizedUris = List.of(
-                "프론트 배포 URL을 넣어주세요",
+                "https://genie-likelion.netlify.app/",
                 "http://localhost:3000"
         );
         if (frontendRedirectUri == null || !authorizedUris.contains(frontendRedirectUri)) {
-            frontendRedirectUri = "프론트 배포 URL을 넣어주세요";
+            frontendRedirectUri = "https://genie-likelion.netlify.app/";
         }
 
         String redirectUrl = UriComponentsBuilder
