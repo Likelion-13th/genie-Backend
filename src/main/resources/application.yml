@@ -1,7 +1,7 @@
 #profile settings
 spring:
   profiles:
-    active: local
+    active: develop
 
 #kakao
   security:
