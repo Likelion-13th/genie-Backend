@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.6'
+	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -18,39 +18,51 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter'
-	runtimeOnly   'com.mysql:mysql-connector-j:8.3.0'
-	compileOnly   'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//  Spring Boot Validation
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	// → DTO 검증(@NotNull, @Email 등)에 필요합니다.
-
-	//  Spring Security
-	implementation 'org.springframework.security:spring-security-config'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	// → 보안 설정 및 필터 체인(SecurityConfig) 작동을 위해 필수입니다.
-
-	//  OAuth2 Client
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	// → 카카오 같은 외부 OAuth2 제공자와 연동하기 위해 필요합니다.
+	implementation 'org.springframework.security:spring-security-config'
 
-	//  JWT (io.jsonwebtoken: JJWT 라이브러리)
+	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	// → Access Token / Refresh Token 생성 및 검증을 위한 라이브러리입니다.
+
+	// Database
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Testing
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// SpringDoc OpenAPI - 가장 안정적인 조합
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+	// AWS SDK
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+// 모든 의존성 충돌 해결
+configurations.all {
+	resolutionStrategy {
+		// ANTLR 버전 통일
+		force 'org.antlr:antlr4-runtime:4.10.1'
+
+		// Swagger 관련 버전 통일 (SpringDoc 2.3.0과 호환)
+		force 'io.swagger.core.v3:swagger-core:2.2.8'
+		force 'io.swagger.core.v3:swagger-annotations:2.2.8'
+		force 'io.swagger.core.v3:swagger-models:2.2.8'
+	}
+}
+
+
+tasks.named('jar') {
+	enabled = false
 }
