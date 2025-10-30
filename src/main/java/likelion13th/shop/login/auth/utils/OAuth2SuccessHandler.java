@@ -64,7 +64,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String frontendRedirectUri = request.getParameter("redirect_uri");
         List<String> authorizedUris = List.of(
                 "https://genie-likelion.netlify.app/",
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "http://localhost:8080"
         );
         if (frontendRedirectUri == null || !authorizedUris.contains(frontendRedirectUri)) {
             frontendRedirectUri = "https://genie-likelion.netlify.app/";
