@@ -4,6 +4,7 @@ spring:
     active: develop
 
 #kakao
+  ##~~
   security:
     oauth2:
       client:
