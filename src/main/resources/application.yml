@@ -1,7 +1,7 @@
 #profile settings
 spring:
   profiles:
-    active: local
+    active: develop
 
 #kakao
   security:
@@ -82,7 +82,6 @@ spring:
       dialect: org.hibernate.dialect.MySQLDialect
       use_sql_comments: true
       default_batch_fetch_size: 1000
-
 
 ---
 
