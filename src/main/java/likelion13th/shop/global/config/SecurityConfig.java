@@ -74,8 +74,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
-                "https://genie-likelion.netlify.app/",
-                "http://Sajang-dev-env.eba-pfhm69kf.ap-northeast-2.elasticbeanstalk.com"
+                "http://sajang-dev-env.eba-pfhm69kf.ap-northeast-2.elasticbeanstalk.com",
+                "https://genie-likelion.netlify.app"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
