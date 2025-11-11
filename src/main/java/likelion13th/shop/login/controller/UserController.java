@@ -52,7 +52,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "우효하지 않음")
 
     })
-    @DeleteMapping("/logout")
+    @DeleteMapping("/user/logout")
     public ApiResponse<Void> logout(HttpServletRequest request) {
         userService.logout(request);
         return ApiResponse.onSuccess(SuccessCode.USER_LOGOUT_SUCCESS, null);
