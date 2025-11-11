@@ -29,38 +29,46 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // 🔹 CSRF 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
 
+                // 🔹 CORS 설정 적용
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
+                // 🔹 인증 및 권한 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/health",
+                                "/health", // health check
 
-                                "/swagger-ui/**",
+                                "/swagger-ui/**",         // 🔑 Swagger
                                 "/v3/api-docs/**",
 
-                                "/users/reissue",
-                                "/users/logout",
+                                "/reissue",         // 🔑 토큰 재발급
+                                "/users/logout",          // 🔑 로그아웃
 
-                                "/token/**",
-                                "/oauth2/**",
-                                "/login/oauth2/**",
+                                "/token/**",              // 🔑 토큰 재발급 및 생성
+                                "/oauth2/**",             // 🟡 카카오 OAuth 리디렉션
+                                "/login/oauth2/**",        // 🟡 카카오 OAuth 콜백
 
-                                "/categories/**",
-                                "/items/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                                "/categories/**",         // ✅ 로그인 없이 카테고리 조회 가능
+                                "/items/**"               // ✅ 로그인 없이 상품 조회 가능
+                        ).permitAll() // 인증 없이 접근 가능한 경로
+                        .anyRequest().authenticated() // 나머지는 JWT가 있어야 접근 가능
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // 🔹 세션 정책: STATELESS (JWT 기반)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // STATELESS: 모든 요청을 토큰으로 인증
+
+                // 🔹 OAuth2 로그인 설정 (UserService 연동)
                 .oauth2Login(oauth2 -> oauth2
+                        //.loginPage("/users/login")
                         .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService))
                 )
 
+                // 🔹 필터 체인 적용
                 .addFilterBefore(authCreationFilter, AnonymousAuthenticationFilter.class)
                 .addFilterBefore(jwtValidationFilter, AuthCreationFilter.class);
 
@@ -74,7 +82,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
-                "http://sajang-dev-env.eba-pfhm69kf.ap-northeast-2.elasticbeanstalk.com",
+                "http://sajang-dev-env.eba-vnmycbab.ap-northeast-2.elasticbeanstalk.com",
                 "https://genie-likelion.netlify.app"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -87,3 +95,4 @@ public class SecurityConfig {
         return source;
     }
 }
+
