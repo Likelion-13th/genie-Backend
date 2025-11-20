@@ -25,5 +25,5 @@ public class ApiResponse<T> { // API 응답
     //실패
     public static <T> ApiResponse<T> onFailure(BaseCode code, T data) {
         return new ApiResponse<>(false, code.getReason().getCode(), code.getReason().getMessage(), data);
-    }
+    }//dddd
 }
